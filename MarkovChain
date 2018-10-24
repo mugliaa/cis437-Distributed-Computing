@@ -1,0 +1,101 @@
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Random;
+
+public class MarkovChain {
+
+	public static void main(String[] args) {
+		
+		Map<Integer, double[]> map = new HashMap<Integer, double[]>();
+		
+		map.put(1, new double[] {0, 0.5d, 0.25d, 0.25d});
+		map.put(2, new double[] {0, 0.25d, 0.25d, 0.25d, 0.25d});
+		map.put(3, new double[] {0, 0.5d, 0.25d, 0.25d});
+		map.put(4, new double[] {0, 0.25d, 0.25d, 0.25d, 0.25d});
+		map.put(5, new double[] {0, 0.25d, 0.25d, 0.25d, 0.25d});
+		map.put(6, new double[] {0, 0.25d, 0.25d, 0.25d, 0.25d});
+		map.put(7, new double[] {0, 0.5d, 0.25d, 0.25d});
+		map.put(8, new double[] {0, 0.25d, 0.25d, 0.25d, 0.25d});
+		map.put(9, new double[] {0, 0.5d, 0.25d, 0.25d});
+		
+		int currentState = 0;
+		
+		Random rand = new Random();
+		currentState = rand.nextInt(9) + 1;
+		
+		if (currentState > 9 || currentState < 1)
+			System.out.println("Error! Current state is out of bounds.");
+		
+		System.out.println("Starting state: " + currentState);
+		
+		for (int m = 0; m < 6; m++) {
+			double move = rand.nextDouble();
+			
+			System.out.println("Random move result: " + move);
+			
+			double[] probability = map.get(currentState);
+			
+			double temp = 0.0d;
+			int i = 0;
+			while (temp < move) {
+				temp += probability[i];
+				i++;
+			}
+			
+			System.out.println("i value: " + (i - 1));
+			i--;
+			int changeToState = 0;
+			if ((currentState == 1 || currentState == 3 || currentState == 7 || currentState == 9) && i == 1) {
+				System.out.println("Staying in same place.");;
+			}
+			else {
+				if (currentState == 1) {
+					int[] moveoptions = new int[] {2,4};
+					changeToState = moveoptions[rand.nextInt(2)];
+				}
+				if (currentState == 2) {
+					int[] moveoptions = new int[] {1,2,3,5};
+					changeToState = moveoptions[rand.nextInt(4)];
+				}
+				if (currentState == 3) {
+					int[] moveoptions = new int[] {2,6};
+					changeToState = moveoptions[rand.nextInt(2)];
+				}
+				if (currentState == 4) {
+					int[] moveoptions = new int[] {1,4,5,7};
+					changeToState = moveoptions[rand.nextInt(4)];
+				}
+				if (currentState == 5) {
+					int[] moveoptions = new int[] {2,4,6,8};
+					changeToState = moveoptions[rand.nextInt(4)];
+				}
+				if (currentState == 6) {
+					int[] moveoptions = new int[] {3,5,6,9};
+					changeToState = moveoptions[rand.nextInt(4)];
+				}
+				if (currentState == 7) {
+					int[] moveoptions = new int[] {4,8};
+					changeToState = moveoptions[rand.nextInt(2)];
+				}
+				if (currentState == 8) {
+					int[] moveoptions = new int[] {5,7,8,9};
+					changeToState = moveoptions[rand.nextInt(4)];
+				}
+				if (currentState == 9) {
+					int[] moveoptions = new int[] {6,8};
+					changeToState = moveoptions[rand.nextInt(2)];
+				}
+				currentState = changeToState;
+			}
+			
+			System.out.println("Moved to: " + currentState + "\n");
+			
+		}
+		
+	}
+
+}
